@@ -70,11 +70,19 @@ const StyledDrumPads = styled.div`
 	grid-template-rows: 1fr 1fr 1fr;
 	grid-template-columns: 1fr 1fr 1fr;
 	grid-gap: 1.5rem;
-	height: 450px;
-	width: 450px;
+	height: 310px;
+	width: 250px;
 	padding: 1.5rem;
 	box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.1);
 	border-radius: 15px;
+	@media (min-width: 350px) {
+		height: 300px;
+		width: 300px;
+	}
+	@media (min-width: 720px) {
+		height: 450px;
+		width: 450px;
+	}
 `;
 
 function DrumPads(props) {

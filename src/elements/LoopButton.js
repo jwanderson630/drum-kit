@@ -14,23 +14,29 @@ const StyledButtonSlot = styled.div`
 const StyledButton = styled.button`
 border: 0;
 background-color: #ddd;
-font-size: 30px;
+font-size: 20px;
 color: #ffffff66
-box-shadow: inset 0 0 15px rgba(255,255,255,0.5), 0px -3px 45px 1px #ffffffaa;
+box-shadow: inset 0 0 15px rgba(255,255,255,0.3), 0px -3px 45px 1px #ffffffaa;
 border-radius: 8px;
 transform: translate3d(0, 1px, 1px) scale(1.25);
 transition: all 50ms linear;
 &:focus {
-    outline 0;
+	outline 0;
 }
 &.active {
-    background-color: ${({ color }) => color};
+	background-color: ${({ color }) => color};
     transform: translate3d(0, 2px, 2px) scale(1.2);
     box-shadow: inset 0 0 15px rgba(0,0,0,0.2), 0px -3px 45px 1px ${({
 		color
 	}) => color + "aa"};
     color: #ffffffee
-   
+	
+}
+@media (min-width: 350px) {
+	font-size: 24px;
+}
+@media (min-width: 720px) {
+	font-size: 30px;
 }
 `;
 

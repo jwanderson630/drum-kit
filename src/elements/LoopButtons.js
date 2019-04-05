@@ -12,7 +12,10 @@ const StyledButtons = styled.div`
 	display: grid;
 	grid-template-columns: 1fr 1fr 1fr;
 	grid-template-ros: 1fr 1fr;
-	grid-gap: 1rem;
+	grid-gap: 0.5rem;
+	@media (min-width: 350px) {
+		grid-gap: 1rem;
+	}
 `;
 
 const loops = [

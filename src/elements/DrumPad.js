@@ -14,7 +14,7 @@ const StyledDrumSlot = styled.div`
 const StyledDrumPad = styled.button`
     border: 0;
     background-color: ${({ color }) => color};
-    font-size: 60px;
+    font-size: 45px;
     color: #ffffff66
     box-shadow: inset 0 0 95px rgba(0,0,0,0.4), 0px -3px 45px 1px ${({
 		color
@@ -26,18 +26,22 @@ const StyledDrumPad = styled.button`
         outline 0;
     }
     &.down {
-        transform: translate3d(0, 2px, 2px) scale(1.05);
+		transform: translate3d(0, 2px, 2px) scale(1.05);
         box-shadow: inset 0 0 95px rgba(0,0,0,0.2), 0px -3px 45px 1px ${({
 		color
 	}) => color + "aa"};
-    color: #ffffffee
-    }
+		color: #ffffffee
+	}
+	@media (min-width: 720px) {
+		font-size: 60px;
+	}
 `;
 
 function useClickKeyAudio(keyCode) {
 	const [down, setDown] = useState(false);
 	const audioRef = useRef();
 	const buttonRef = useRef();
+	const played = useRef(false);
 	const playAudio = useCallback(() => {
 		if (audioRef.current) {
 			audioRef.current.currentTime = 0;
@@ -45,45 +49,49 @@ function useClickKeyAudio(keyCode) {
 		}
 	}, [audioRef]);
 
-	const handleKeyDown = useCallback(
+	const handleDown = useCallback(
 		e => {
-			if (e.keyCode === keyCode) {
-				playAudio();
-				setDown(true);
+			e.preventDefault();
+			if (e.keyCode === keyCode || e.target === buttonRef.current) {
+				if (!played.current) {
+					playAudio();
+					setDown(true);
+					played.current = true;
+				}
 			}
 		},
 		[keyCode, playAudio]
 	);
 
-	const handleKeyUp = useCallback(
+	const handleUp = useCallback(
 		e => {
-			if (e.keyCode === keyCode) {
+			e.preventDefault();
+			if (e.keyCode === keyCode || e.target === buttonRef.current) {
 				setDown(false);
+				played.current = false;
 			}
 		},
 		[keyCode]
 	);
 	useEffect(() => {
 		const bRef = buttonRef.current;
-		bRef.addEventListener("mousedown", () => {
-			playAudio();
-			setDown(true);
-		});
-		bRef.addEventListener("mouseup", () => setDown(false));
-		bRef.addEventListener("mouseleave", () => setDown(false));
-		window.addEventListener("keydown", handleKeyDown);
-		window.addEventListener("keyup", handleKeyUp);
+		bRef.addEventListener("mousedown", handleDown);
+		bRef.addEventListener("touchstart", handleDown);
+		bRef.addEventListener("touchend", handleUp);
+		bRef.addEventListener("mouseup", handleUp);
+		bRef.addEventListener("mouseleave", handleUp);
+		window.addEventListener("keydown", handleDown);
+		window.addEventListener("keyup", handleUp);
 		return () => {
-			bRef.removeEventListener("mousedown", () => {
-				playAudio();
-				setDown(true);
-			});
-			bRef.removeEventListener("mouseup", () => setDown(false));
-			bRef.removeEventListener("mouseleave", () => setDown(false));
-			window.removeEventListener("keydown", handleKeyDown);
-			window.removeEventListener("keyup", handleKeyUp);
+			bRef.removeEventListener("mousedown", handleDown);
+			bRef.removeEventListener("touchstart", handleDown);
+			bRef.removeEventListener("touchend", handleUp);
+			bRef.removeEventListener("mouseup", handleUp);
+			bRef.removeEventListener("mouseleave", handleUp);
+			window.removeEventListener("keydown", handleDown);
+			window.removeEventListener("keyup", handleUp);
 		};
-	}, [playAudio, setDown, handleKeyDown, handleKeyUp]);
+	}, [handleDown, handleUp, playAudio, setDown]);
 
 	return [audioRef, buttonRef, down];
 }

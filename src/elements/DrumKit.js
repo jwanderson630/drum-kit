@@ -12,16 +12,28 @@ const StyledDrumKit = styled.div`
 	border-radius: 1.5rem;
 	display: grid;
 	grid-gap: 1.5rem;
-	grid-template-columns: auto auto;
-	grid-template-rows: auto;
+	grid-template-rows: auto auto;
+	grid-template-columns: auto;
+	max-width: 90%;
+	margin: 0 auto;
+	@media (min-width: 720px) {
+		grid-gap: 1.5rem;
+		grid-template-columns: auto auto;
+		grid-template-rows: auto;
+	}
 `;
 
 const StyledSideBar = styled.div`
 	display: grid;
-	grid-template-rows: 1fr 1fr 1fr;
-	width: 200px;
-	height: 450px;
+	grid-template-columns: 1fr 1fr;
+	grid-template-rows: 1fr auto;
 	grid-gap: 1.5rem;
+	@media (min-width: 720px) {
+		grid-template-columns: 1fr;
+		grid-template-rows: 1fr 1fr 1fr;
+		width: 200px;
+		height: 450px;
+	}
 `;
 
 const DrumKit = () => {

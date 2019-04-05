@@ -8,6 +8,10 @@ const StyledDisplay = styled.div`
 	box-shadow: inset 1px 1px 1px rgba(0, 0, 0, 0.1);
 	color: #333333cc;
 	user-select: none;
+	grid-column: 1/3;
+	@media (min-width: 720px) {
+		grid-column: 1/2;
+	}
 `;
 
 const StyledLabel = styled.div`
